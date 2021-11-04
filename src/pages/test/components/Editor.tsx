@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { Col, Row } from 'antd';
+import { Col, Row, Tabs } from 'antd';
 import FormEditor from './FormEditor';
 import StoreViewer from './StoreViewer';
 import TableEditor from './TableEditor';
@@ -16,17 +16,21 @@ const Editor: FunctionComponent<PropsWithStore> = (props) => {
         <StoreViewer store={store} />
       </Col>
       <Col span={16}>
-        <Row gutter={[16, 8]} wrap>
-          <Col span={24}>
+        <Tabs defaultActiveKey="form">
+          <Tabs.TabPane key="form" tab="表单">
             <FormEditor store={store} />
-          </Col>
-          <Col span={12}>
-            <TableEditor store={store} />
-          </Col>
-          <Col span={12}>
-            <TreeEditor store={store} />
-          </Col>
-        </Row>
+          </Tabs.TabPane>
+          <Tabs.TabPane key="components" tab="自定义组件">
+            <Row gutter={[16, 8]}>
+              <Col span={12}>
+                <TableEditor store={store} />
+              </Col>
+              <Col span={12}>
+                <TreeEditor store={store} />
+              </Col>
+            </Row>
+          </Tabs.TabPane>
+        </Tabs>
       </Col>
     </Row>
   );

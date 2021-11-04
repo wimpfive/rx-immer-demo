@@ -1,6 +1,12 @@
 import { FunctionComponent, Key } from 'react';
 import { useState } from 'react';
 import { Button, Card, Input, Space, Tree } from 'antd';
+import {
+  CheckOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import type { DataNode } from 'antd/lib/tree';
 import { uniqueId } from 'lodash';
 import type { PropsWithStore } from '..';
@@ -109,7 +115,7 @@ const NodeTitle: FunctionComponent<NodeTitleProps> = (props) => {
               setEdit((e) => !e);
             }}
           >
-            {edit ? '保存' : '编辑'}
+            {edit ? <CheckOutlined /> : <EditOutlined />}
           </a>
           <a
             onClick={(event) => {
@@ -135,7 +141,7 @@ const NodeTitle: FunctionComponent<NodeTitleProps> = (props) => {
               );
             }}
           >
-            删除
+            <DeleteOutlined />
           </a>
           <a
             onClick={(event) => {
@@ -155,7 +161,7 @@ const NodeTitle: FunctionComponent<NodeTitleProps> = (props) => {
               );
             }}
           >
-            新增
+            <PlusOutlined />
           </a>
         </Space>
       )}

@@ -29,7 +29,7 @@ export interface PropsWithStore {
 export default function Test() {
   const store = useRxImmer<Store>(INITIAL_STORE, {
     history: {
-      capacity: 20,
+      capacity: 100,
       bufferDebounce: 500,
     },
     diachrony: true,

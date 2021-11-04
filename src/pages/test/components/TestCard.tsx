@@ -1,6 +1,8 @@
-import type { FunctionComponent, MutableRefObject } from 'react';
+import { FunctionComponent, MutableRefObject, useState } from 'react';
+import { Diachrony } from 'rx-immer';
 import { Button, Card, Input, InputNumber, Space } from 'antd';
-import type { PropsWithStore, ReplayActions } from '..';
+import { LoadingOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import type { PropsWithStore, ReplayActions, Store } from '..';
 
 interface TestCardProps {
   replayRef: MutableRefObject<ReplayActions | undefined>;
@@ -13,6 +15,9 @@ const TestCard: FunctionComponent<TestCardProps & PropsWithStore> = (props) => {
   const count = store.useBind<number>(['count']);
 
   const [undos, redos] = store.useRoamStatus?.() ?? [0, 0];
+
+  const [recording, setRecording] = useState(false);
+  const [diachrony, setDiachrony] = useState<Diachrony<Store>>();
 
   return (
     <Card
@@ -65,17 +70,31 @@ const TestCard: FunctionComponent<TestCardProps & PropsWithStore> = (props) => {
             }}
           />
         </Space>,
-        <Button
-          onClick={() => {
-            const diachrony = store.archive?.();
-            if (diachrony) {
-              console.log(diachrony);
-              replayRef.current?.open(diachrony);
-            }
-          }}
-        >
-          归档并重播
-        </Button>,
+        <Space>
+          <Button
+            type="primary"
+            icon={recording ? <LoadingOutlined /> : <VideoCameraOutlined />}
+            onClick={() => {
+              const result = store.archive?.();
+              setDiachrony(recording ? result : undefined);
+              setRecording((r) => !r);
+            }}
+            danger={recording}
+          >
+            {recording ? '停止' : '记录'}
+          </Button>
+          <Button
+            onClick={() => {
+              if (diachrony) {
+                console.log('归档数据:', diachrony);
+                replayRef.current?.open(diachrony);
+              }
+            }}
+            disabled={!diachrony}
+          >
+            重播
+          </Button>
+        </Space>,
       ]}
     >
       {children}
