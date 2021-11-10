@@ -77,6 +77,7 @@ const Screen: FunctionComponent = () => {
         height: '70vh',
         backgroundColor: 'lightgray',
         margin: '14px 0',
+        cursor: 'crosshair',
         overflow: 'hidden',
       }}
       onMouseMove={(event) => {

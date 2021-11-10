@@ -1,5 +1,4 @@
 import { FunctionComponent, useContext } from 'react';
-import { random } from 'lodash';
 import { GameContext, IItem } from '../entity';
 
 interface ItemProps {
@@ -13,7 +12,7 @@ const Item: FunctionComponent<ItemProps> = (props) => {
   const item = game.useBind<IItem>(['items', i]);
 
   return (
-    <div
+    <span
       style={{
         position: 'absolute',
         left: item.x,
@@ -21,12 +20,15 @@ const Item: FunctionComponent<ItemProps> = (props) => {
         width: item.width,
         height: item.height,
         fontSize: item.height,
+        lineHeight: '100%',
+        textAlign: 'center',
+        verticalAlign: 'baseline',
         fontWeight: 'bold',
         color: item.color,
       }}
     >
       {item.word}
-    </div>
+    </span>
   );
 };
 

@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react';
-import { Button, Card, Col, InputNumber, Modal, Row, Space } from 'antd';
+import { Button, Card, Col, InputNumber, Row, Space } from 'antd';
 import { LoadingOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { IGame } from './entity';
 import { useGame } from './hooks';
@@ -13,6 +13,8 @@ const FallingWordGame: FunctionComponent = () => {
   const [i, setI] = game.useTwoWayBind<number>('env.params.i');
   const [a, setA] = game.useTwoWayBind<number>('env.params.a');
   const [size, setSize] = game.useTwoWayBind<number>('env.itemStyle.size');
+
+  const [visible, setVisible] = useState(false);
 
   return (
     <Card
@@ -39,7 +41,21 @@ const FallingWordGame: FunctionComponent = () => {
     >
       <Row gutter={32}>
         <Col span={6}>
-          <Card title="设置" size="small">
+          <Card
+            title="设置"
+            size="small"
+            extra={
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                  setVisible((v) => !v);
+                }}
+              >
+                {visible ? '隐藏数据' : '展示数据'}
+              </Button>
+            }
+          >
             <Space direction="vertical">
               <Space>
                 帧间隔:
@@ -64,8 +80,12 @@ const FallingWordGame: FunctionComponent = () => {
                 />
               </Space>
             </Space>
+            {visible && (
+              <Viewer
+                style={{ height: 'calc(70vh - 210px)', overflowY: 'scroll' }}
+              />
+            )}
           </Card>
-          <Viewer />
         </Col>
         <Col span={18}>
           <Screen />
