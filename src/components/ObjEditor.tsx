@@ -1,12 +1,13 @@
-import type { FunctionComponent } from 'react';
 import { useLayoutEffect, useRef } from 'react';
 import { Button, Card } from 'antd';
 import JSONEditor from 'jsoneditor';
 import 'jsoneditor/dist/jsoneditor.css';
-import { updateDeep } from 'rx-immer';
-import type { PropsWithStore } from '..';
+import { Objectish, updateDeep } from 'rx-immer';
+import type { RxImmerWithHooks } from 'rx-immer-react';
 
-const ObjEditor: FunctionComponent<PropsWithStore> = (props) => {
+function ObjEditor<T extends { obj: Objectish }>(props: {
+  store: RxImmerWithHooks<T>;
+}) {
   const { store } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +53,6 @@ const ObjEditor: FunctionComponent<PropsWithStore> = (props) => {
       />
     </Card>
   );
-};
+}
 
 export default ObjEditor;

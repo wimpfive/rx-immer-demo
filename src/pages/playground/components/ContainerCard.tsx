@@ -4,11 +4,13 @@ import { Button, Card, Input, InputNumber, Space } from 'antd';
 import { LoadingOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import type { PropsWithStore, ReplayActions, Store } from '..';
 
-interface TestCardProps {
+interface ContainerCardProps {
   replayRef: MutableRefObject<ReplayActions | undefined>;
 }
 
-const TestCard: FunctionComponent<TestCardProps & PropsWithStore> = (props) => {
+const ContainerCard: FunctionComponent<ContainerCardProps & PropsWithStore> = (
+  props,
+) => {
   const { store, replayRef, children } = props;
 
   const title = store.useBind<string | undefined>(['title']);
@@ -102,4 +104,4 @@ const TestCard: FunctionComponent<TestCardProps & PropsWithStore> = (props) => {
   );
 };
 
-export default TestCard;
+export default ContainerCard;

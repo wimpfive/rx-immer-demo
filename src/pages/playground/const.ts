@@ -3,7 +3,7 @@ import type { Store } from '.';
 
 export const INITIAL_STORE: Store = {
   title: 'RxImmer演示',
-  count: 10,
+  count: 5,
   list: [
     { id: uniqueId(), name: 'test', status: 'success', enable: false },
     { id: uniqueId(), name: 'example', status: 'error', enable: true },

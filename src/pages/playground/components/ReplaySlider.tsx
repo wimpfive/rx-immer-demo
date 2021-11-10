@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Slider } from 'antd';
 import { debounce } from 'lodash';
-import { useHandle } from '../utils';
+import { useHandle } from '@/utils';
 import { PropsWithStore } from '..';
 
 interface ReplaySliderProps {

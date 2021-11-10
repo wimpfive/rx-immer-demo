@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Diachrony } from 'rx-immer';
 import { RxImmerWithHooks, useRxImmer } from 'rx-immer-react';
 import { FieldData } from 'rc-field-form/lib/interface';
-import TestCard from './components/TestCard';
+import ContainerCard from './components/ContainerCard';
 import { ListItem } from './components/TableEditor';
 import { TreeData } from './components/TreeEditor';
 import Editor from './components/Editor';
@@ -26,7 +26,7 @@ export interface PropsWithStore {
   store: RxImmerWithHooks<Store>;
 }
 
-export default function Test() {
+export default function Playground() {
   const store = useRxImmer<Store>(INITIAL_STORE, {
     history: {
       capacity: 100,
@@ -37,18 +37,26 @@ export default function Test() {
 
   const replayRef = useRef<ReplayActions>();
 
+  useEffect(() => {
+    store.startAffair(function () {
+      const subscription = this.observe('count').subscribe((count: number) => {
+        this.commit((state) => {
+          state.list.splice(count);
+        });
+      });
+      return function () {
+        console.log('affairs:', this.showAffairs());
+        subscription.unsubscribe();
+      };
+    }, 'sync count and list length');
+  }, [store]);
+
   return (
-    <div
-      style={{
-        padding: '2%',
-        backgroundColor: 'lightgray',
-        minHeight: '100vh',
-      }}
-    >
-      <TestCard store={store} replayRef={replayRef}>
+    <>
+      <ContainerCard store={store} replayRef={replayRef}>
         <Editor store={store} />
-      </TestCard>
+      </ContainerCard>
       <Replay actionRef={replayRef} />
-    </div>
+    </>
   );
 }

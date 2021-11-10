@@ -4,7 +4,6 @@ import FormEditor from './FormEditor';
 import StoreViewer from './StoreViewer';
 import TableEditor from './TableEditor';
 import TreeEditor from './TreeEditor';
-// import ObjEditor from './ObjEditor';
 import { PropsWithStore } from '..';
 
 const Editor: FunctionComponent<PropsWithStore> = (props) => {
