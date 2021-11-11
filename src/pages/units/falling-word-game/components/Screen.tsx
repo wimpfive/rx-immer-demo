@@ -1,4 +1,10 @@
-import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import {
+  FunctionComponent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { distinctUntilChanged, map } from 'rxjs';
 import { random } from 'lodash';
 import { IGame, IItem } from '../entity';
@@ -8,49 +14,48 @@ import Item from './Item';
 const Screen: FunctionComponent = () => {
   const { game, resize, point, add } = useGame();
 
-  const resizeObserverRef = useRef<ResizeObserver>();
-  if (!resizeObserverRef.current) {
-    resizeObserverRef.current = new ResizeObserver((entries) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [items, setItems] = useState<Record<string, IItem>>({});
+
+  useLayoutEffect(() => {
+    const { current: container } = containerRef;
+    if (!container) return;
+
+    resize({
+      width: container.clientWidth,
+      height: container.clientHeight,
+    });
+
+    const resizeObserver = new ResizeObserver((entries) => {
       const [entry] = entries;
       resize({
         width: entry.contentRect.width,
         height: entry.contentRect.height,
       });
     });
-  }
 
-  const ref = useRef<HTMLDivElement>(null);
+    resizeObserver.observe(container);
 
-  const [items, setItems] = useState<Record<string, IItem>>({});
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [resize]);
 
-  useEffect(() => {
-    if (ref.current) {
-      resize({
-        width: ref.current.clientWidth,
-        height: ref.current.clientHeight,
-      });
-      resizeObserverRef.current!.observe(ref.current);
-
-      return () => {
-        if (ref.current) {
-          resizeObserverRef.current!.unobserve(ref.current);
-        }
-      };
-    }
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const listener = (ev: KeyboardEvent) => {
       add({
         word: ev.key,
         color: `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`,
       });
     };
+
     window.addEventListener('keypress', listener);
+
     return () => {
       window.removeEventListener('keypress', listener);
     };
-  }, []);
+  }, [add]);
 
   useEffect(() => {
     const subscription = game
@@ -70,7 +75,7 @@ const Screen: FunctionComponent = () => {
 
   return (
     <div
-      ref={ref}
+      ref={containerRef}
       style={{
         position: 'relative',
         width: '100%',
@@ -81,10 +86,12 @@ const Screen: FunctionComponent = () => {
         overflow: 'hidden',
       }}
       onMouseMove={(event) => {
-        point({
-          x: event.nativeEvent.offsetX,
-          y: event.nativeEvent.offsetY,
-        });
+        if (event.target === containerRef.current) {
+          point({
+            x: event.nativeEvent.offsetX,
+            y: event.nativeEvent.offsetY,
+          });
+        }
       }}
       onMouseLeave={() => {
         point();
