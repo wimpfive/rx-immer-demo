@@ -1,9 +1,31 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
+import { RxImmerWithHooks } from 'rx-immer-react';
 import { uniqueId } from 'lodash';
 import { GameContext, IGame } from './entity';
 
 export const useGame = () => {
   const game = useContext(GameContext);
+
+  const items = useMemo(
+    () => game.sub<RxImmerWithHooks<IGame['items']>>('items'),
+    [game],
+  );
+  const env = useMemo(
+    () => game.sub<RxImmerWithHooks<IGame['env']>>('env'),
+    [game],
+  );
+  const container = useMemo(
+    () => env.sub<RxImmerWithHooks<IGame['env']['container']>>('container'),
+    [env],
+  );
+  const params = useMemo(
+    () => env.sub<RxImmerWithHooks<IGame['env']['params']>>('params'),
+    [env],
+  );
+  const itemStyle = useMemo(
+    () => env.sub<RxImmerWithHooks<IGame['env']['itemStyle']>>('itemStyle'),
+    [env],
+  );
 
   // 刷新时钟
   const sync = useCallback(() => {
@@ -40,12 +62,12 @@ export const useGame = () => {
 
   // 清空
   const clear = useCallback(() => {
-    game.commit((g) => {
-      Object.keys(g.items).forEach((key) => {
-        delete g.items[key];
+    items.commit((items) => {
+      Object.keys(items).forEach((key) => {
+        delete items[key];
       });
     });
-  }, [game]);
+  }, [items]);
 
   // 添加
   const add = useCallback(
@@ -75,12 +97,12 @@ export const useGame = () => {
   // 界面尺寸变化
   const resize = useCallback(
     (size: { width: number; height: number }) => {
-      game.commit<IGame['env']['container']>((container) => {
+      container.commit((container) => {
         container.width = size.width;
         container.height = size.height;
-      }, 'env.container');
+      });
     },
-    [game],
+    [container],
   );
 
   // 鼠标移动
@@ -107,5 +129,17 @@ export const useGame = () => {
     [game],
   );
 
-  return { game, start, stop, clear, add, resize, point };
+  return {
+    game,
+    items,
+    container,
+    params,
+    itemStyle,
+    start,
+    stop,
+    clear,
+    add,
+    resize,
+    point,
+  };
 };

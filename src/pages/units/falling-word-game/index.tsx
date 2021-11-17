@@ -8,12 +8,15 @@ import Viewer from './components/viewer';
 import Screen from './components/Screen';
 
 const FallingWordGame: FunctionComponent = () => {
-  const { game, start, stop, clear } = useGame();
+  const { game, params, itemStyle, start, stop, clear } = useGame();
   const status = game.useBind<IGame['status']>('status');
   const running = status === 'running';
-  const [i, setI] = game.useTwoWayBind<number>('env.params.i');
-  const [a, setA] = game.useTwoWayBind<number>('env.params.a');
-  const [size, setSize] = game.useTwoWayBind<number>('env.itemStyle.size');
+
+  const [i, setI] = params.useTwoWayBind<number>('i');
+  const [a, setA] = params.useTwoWayBind<number>('a');
+  const [cor, setCor] = params.useTwoWayBind<number>('cor');
+  const [cof, setCof] = params.useTwoWayBind<number>('cof');
+  const [size, setSize] = itemStyle.useTwoWayBind<number>('size');
 
   const [visible, setVisible] = useState(false);
 
@@ -58,7 +61,7 @@ const FallingWordGame: FunctionComponent = () => {
                 </Button>
               }
             >
-              <Space direction="vertical">
+              <Space size="large" wrap>
                 <Space>
                   帧间隔:
                   <InputNumber
@@ -71,6 +74,26 @@ const FallingWordGame: FunctionComponent = () => {
                 <Space>
                   加速度:
                   <InputNumber value={a} onChange={setA} />
+                </Space>
+                <Space>
+                  反弹系数:
+                  <InputNumber
+                    value={cor}
+                    onChange={setCor}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                  />
+                </Space>
+                <Space>
+                  摩擦系数:
+                  <InputNumber
+                    value={cof}
+                    onChange={setCof}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                  />
                 </Space>
                 <Space>
                   字大小:

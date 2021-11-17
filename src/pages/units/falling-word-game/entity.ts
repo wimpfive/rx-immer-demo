@@ -30,6 +30,8 @@ export interface IGame {
     params: {
       i: number;
       a: number;
+      cor: number;
+      cof: number;
     };
     itemStyle: {
       size: number;
@@ -42,7 +44,7 @@ const INIT_GAME: IGame = {
   items: {},
   env: {
     container: { width: 0, height: 0 },
-    params: { i: 10, a: 10 },
+    params: { i: 10, a: 10, cor: 0.6, cof: 0.9 },
     itemStyle: { size: 48 },
   },
 };

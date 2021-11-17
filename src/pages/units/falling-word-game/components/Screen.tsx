@@ -7,12 +7,12 @@ import {
 } from 'react';
 import { distinctUntilChanged, map } from 'rxjs';
 import { random } from 'lodash';
-import { IGame, IItem } from '../entity';
+import { IItem } from '../entity';
 import { useGame } from '../hooks';
 import Item from './Item';
 
 const Screen: FunctionComponent = () => {
-  const { game, resize, point, add } = useGame();
+  const { items: itemsStore, resize, point, add } = useGame();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -58,8 +58,8 @@ const Screen: FunctionComponent = () => {
   }, [add]);
 
   useEffect(() => {
-    const subscription = game
-      .observe<IGame['items']>('items')
+    const subscription = itemsStore
+      .observe()
       .pipe(
         map((items) => ({ keys: Object.keys(items).sort().join(), items })),
         distinctUntilChanged((p, c) => p.keys === c.keys),
@@ -71,7 +71,7 @@ const Screen: FunctionComponent = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [game]);
+  }, [itemsStore]);
 
   return (
     <div

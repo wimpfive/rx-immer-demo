@@ -11,20 +11,32 @@ const Game: FunctionComponent = (props) => {
     game.startAffair(function () {
       const run = (i: number) => {
         this.commit((g) => {
-          const { a } = g.env.params;
+          const { a, cor, cof } = g.env.params;
           const { height } = g.env.container;
+          const pad = 0.02 * height;
           const d = (i * a) / 1000;
+          const tov = 2 * d;
 
           Object.values(g.items).forEach((item) => {
             item.x += item.vx;
             item.y += item.vy;
             item.vy += d;
           });
-          Object.entries(g.items).forEach(([key, item]) => {
-            if (item.y + item.height > height) {
+
+          Object.values(g.items)
+            .filter((item) => item.y + item.height > height)
+            .filter((item) => item.vy > 0)
+            .forEach((item) => {
+              item.vy *= -cor;
+              item.vx *= cof;
+            });
+
+          Object.entries(g.items)
+            .filter(([, item]) => item.y + item.height > height - pad)
+            .filter(([, item]) => Math.sqrt(item.vx ** 2 + item.vy ** 2) < tov)
+            .forEach(([key]) => {
               delete g.items[key];
-            }
-          });
+            });
         });
       };
 
@@ -49,7 +61,7 @@ const Game: FunctionComponent = (props) => {
     };
   }, [game]);
 
-  return <GameContext.Provider value={game}>{children}</GameContext.Provider>;
+  return <GameContext.Provider>{children}</GameContext.Provider>;
 };
 
 export default Game;
