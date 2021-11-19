@@ -14,13 +14,13 @@ const Game: FunctionComponent = (props) => {
           const { a, cor, cof } = g.env.params;
           const { height } = g.env.container;
           const pad = 0.02 * height;
-          const d = (i * a) / 1000;
-          const tov = 2 * d;
+          const dvy = i * a * 1e-6;
+          const tov = 2 * dvy;
 
           Object.values(g.items).forEach((item) => {
-            item.x += item.vx;
-            item.y += item.vy;
-            item.vy += d;
+            item.x += i * item.vx;
+            item.y += i * item.vy;
+            item.vy += dvy;
           });
 
           Object.values(g.items)

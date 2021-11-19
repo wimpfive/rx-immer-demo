@@ -1,29 +1,21 @@
 import { useCallback, useContext, useMemo } from 'react';
-import { RxImmerWithHooks } from 'rx-immer-react';
 import { uniqueId } from 'lodash';
 import { GameContext, IGame } from './entity';
+
+type IEnv = IGame['env'];
 
 export const useGame = () => {
   const game = useContext(GameContext);
 
-  const items = useMemo(
-    () => game.sub<RxImmerWithHooks<IGame['items']>>('items'),
-    [game],
-  );
-  const env = useMemo(
-    () => game.sub<RxImmerWithHooks<IGame['env']>>('env'),
-    [game],
-  );
+  const items = useMemo(() => game.sub<IGame['items']>('items'), [game]);
+  const env = useMemo(() => game.sub<IEnv>('env'), [game]);
   const container = useMemo(
-    () => env.sub<RxImmerWithHooks<IGame['env']['container']>>('container'),
+    () => env.sub<IEnv['container']>('container'),
     [env],
   );
-  const params = useMemo(
-    () => env.sub<RxImmerWithHooks<IGame['env']['params']>>('params'),
-    [env],
-  );
+  const params = useMemo(() => env.sub<IEnv['params']>('params'), [env]);
   const itemStyle = useMemo(
-    () => env.sub<RxImmerWithHooks<IGame['env']['itemStyle']>>('itemStyle'),
+    () => env.sub<IEnv['itemStyle']>('itemStyle'),
     [env],
   );
 
@@ -112,9 +104,10 @@ export const useGame = () => {
       game.commit((g) => {
         if (pointer) {
           if (g.pointer) {
+            const c = 0.3;
             const dt = Math.max(now - g.pointer.timeStamp, 1);
-            g.pointer.vx = (pointer.x - g.pointer.x) / dt;
-            g.pointer.vy = (pointer.y - g.pointer.y) / dt;
+            g.pointer.vx = c * ((pointer.x - g.pointer.x) / dt);
+            g.pointer.vy = c * ((pointer.y - g.pointer.y) / dt);
             g.pointer.x = pointer.x;
             g.pointer.y = pointer.y;
             g.pointer.timeStamp = now;

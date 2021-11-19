@@ -2,9 +2,10 @@ import { FunctionComponent, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import Playground from './playground';
 import FallingWordGame from './units/falling-word-game';
+import Simple from './units/simple';
 
 const Index: FunctionComponent = () => {
-  const [tabActiveKey, setTabActiveKey] = useState('playground');
+  const [tabActiveKey, setTabActiveKey] = useState('simple');
 
   return (
     <div
@@ -14,6 +15,7 @@ const Index: FunctionComponent = () => {
     >
       <PageContainer
         tabList={[
+          { key: 'simple', tab: '简单测试' },
           { key: 'playground', tab: '综合演示' },
           { key: 'falling-word-game', tab: '抛字游戏' },
         ]}
@@ -22,6 +24,8 @@ const Index: FunctionComponent = () => {
       >
         {(() => {
           switch (tabActiveKey) {
+            case 'simple':
+              return <Simple />;
             case 'playground':
               return <Playground />;
             case 'falling-word-game':
