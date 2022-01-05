@@ -4,6 +4,8 @@ import Simple from './units/simple';
 import AsyncTest from './units/async';
 import Playground from './playground';
 import FallingWordGame from './units/falling-word-game';
+import TestCoolTabs from './test-cool-tabs';
+import Query from './units/query';
 
 const Index: FunctionComponent = () => {
   const [tabActiveKey, setTabActiveKey] = useState('simple');
@@ -20,6 +22,8 @@ const Index: FunctionComponent = () => {
           { key: 'async', tab: '异步更新' },
           { key: 'playground', tab: '综合演示' },
           { key: 'falling-word-game', tab: '抛字游戏' },
+          { key: 'test-cool-tab', tab: '测试tabs' },
+          { key: 'query', tab: '测试查询' },
         ]}
         tabActiveKey={tabActiveKey}
         onTabChange={setTabActiveKey}
@@ -34,6 +38,10 @@ const Index: FunctionComponent = () => {
               return <Playground />;
             case 'falling-word-game':
               return <FallingWordGame />;
+            case 'test-cool-tab':
+              return <TestCoolTabs />;
+            case 'query':
+              return <Query />;
             default:
               return null;
           }
