@@ -1,5 +1,5 @@
 import { CSSProperties, FunctionComponent } from 'react';
-import { injectWithContext, RxImmerWithHooks } from 'rx-immer-react';
+import { injectInstanceWithContext, RxImmerWithHooks } from 'rx-immer-react';
 import { Typography } from 'antd';
 import { GameContext, IGame } from '../entity';
 
@@ -18,4 +18,4 @@ const Viewer: FunctionComponent<{
   );
 };
 
-export default injectWithContext(GameContext, 'game')(Viewer);
+export default injectInstanceWithContext(GameContext, 'game')(Viewer);

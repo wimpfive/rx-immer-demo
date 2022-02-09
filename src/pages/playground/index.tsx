@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Diachrony } from 'rx-immer';
 import { RxImmerWithHooks, useRxImmer } from 'rx-immer-react';
+import { skip } from 'rxjs';
 import { FieldData } from 'rc-field-form/lib/interface';
 import ContainerCard from './components/ContainerCard';
 import { ListItem } from './components/TableEditor';
@@ -39,11 +40,13 @@ export default function Playground() {
 
   useEffect(() => {
     store.startAffair(function () {
-      const subscription = this.observe('count').subscribe((count: number) => {
-        this.commit((state) => {
-          state.list.splice(count);
+      const subscription = this.observe('count')
+        .pipe(skip(1))
+        .subscribe((count: number) => {
+          this.commit((state) => {
+            state.list.splice(count);
+          });
         });
-      });
       return function () {
         console.log('affairs:', this.showAffairs());
         subscription.unsubscribe();

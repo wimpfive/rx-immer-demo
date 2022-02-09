@@ -1,7 +1,11 @@
 import { FunctionComponent, useState } from 'react';
 import { Card, Input, Space, Tag, Typography } from 'antd';
 import { Path } from 'rx-immer';
-import { compose, RxImmerWithHooks, useRxImmer } from 'rx-immer-react';
+import {
+  injectDataWithInstance,
+  RxImmerWithHooks,
+  useRxImmer,
+} from 'rx-immer-react';
 
 const Edit: FunctionComponent<{
   store: RxImmerWithHooks<any>;
@@ -36,7 +40,12 @@ const View: FunctionComponent<{
   );
 };
 
-const ComposedView = compose({ state: [] }, {}, 'mapping', 'store')(View);
+const ComposedView = injectDataWithInstance(
+  { state: [] },
+  {},
+  'mapping',
+  'store',
+)(View);
 
 const Simple: FunctionComponent = () => {
   const store = useRxImmer<any>({ a: [{ b: { c: 'test' } }, 1, 'abc', {}] });
