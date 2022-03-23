@@ -49,6 +49,4 @@ const INIT_GAME: IGame = {
   },
 };
 
-export const GameContext = createRxImmerContext<IGame>(INIT_GAME, {
-  history: false,
-});
+export const GameContext = createRxImmerContext<IGame>(INIT_GAME);

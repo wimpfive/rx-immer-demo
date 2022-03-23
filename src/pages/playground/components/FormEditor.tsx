@@ -1,3 +1,4 @@
+import { Path, updateDeep } from 'rx-immer';
 import { FunctionComponent } from 'react';
 import { Card } from 'antd';
 import ProForm, {
@@ -13,8 +14,6 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { FieldData } from 'rc-field-form/lib/interface';
 import { mock } from 'mockjs';
-import { Path, updateDeep } from 'rx-immer';
-import { RxImmerWithHooks } from 'rx-immer-react';
 import { PropsWithStore } from '..';
 
 const waitTime = (time: number = 100) => {
@@ -25,13 +24,13 @@ const waitTime = (time: number = 100) => {
   });
 };
 
-function useFormWithRxImmer<T>(rxImmer: RxImmerWithHooks<T>, path?: Path) {
-  const fields = rxImmer.useBind<FieldData[]>(path!) as FieldData[];
+function useFormWithRxImmer(store: PropsWithStore['store'], path?: Path) {
+  const fields = store.useBind<FieldData[]>(path!) as FieldData[];
   const onFieldsChange = (
     changedFields: FieldData[],
     allFields: FieldData[],
   ) => {
-    rxImmer.commit<FieldData[]>((draft) => {
+    store.commit<FieldData[]>((draft) => {
       updateDeep(draft, allFields);
     }, path!);
   };

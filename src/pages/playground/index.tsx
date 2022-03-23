@@ -1,14 +1,27 @@
+import {
+  Diachrony,
+  diachronyPlugin,
+  DiachronyPluginExt,
+  historyPlugin,
+  HistoryPluginExt,
+  ReplayModeExt,
+} from 'rx-immer';
 import { useEffect, useRef } from 'react';
-import { Diachrony } from 'rx-immer';
-import { RxImmerWithHooks, useRxImmer } from 'rx-immer-react';
+import {
+  DiachronyHooksPluginExt,
+  HistoryHooksPluginExt,
+  RxImmerReact,
+  useRxImmer,
+} from 'rx-immer-react';
 import { skip } from 'rxjs';
 import { FieldData } from 'rc-field-form/lib/interface';
+
 import ContainerCard from './components/ContainerCard';
 import { ListItem } from './components/TableEditor';
 import { TreeData } from './components/TreeEditor';
 import Editor from './components/Editor';
-import { INITIAL_STORE } from './const';
 import Replay from './replay';
+import { INITIAL_STORE } from './const';
 
 export interface Store {
   count: number;
@@ -24,17 +37,32 @@ export interface ReplayActions {
 }
 
 export interface PropsWithStore {
-  store: RxImmerWithHooks<Store>;
+  store: RxImmerReact<
+    Store,
+    Partial<
+      HistoryPluginExt &
+        HistoryHooksPluginExt &
+        DiachronyPluginExt &
+        DiachronyHooksPluginExt &
+        ReplayModeExt
+    >
+  >;
 }
 
 export default function Playground() {
-  const store = useRxImmer<Store>(INITIAL_STORE, {
-    history: {
+  const store = useRxImmer<
+    Store,
+    HistoryPluginExt &
+      DiachronyPluginExt &
+      HistoryHooksPluginExt &
+      DiachronyHooksPluginExt
+  >(INITIAL_STORE, [
+    historyPlugin({
       capacity: 100,
       bufferDebounce: 500,
-    },
-    diachrony: true,
-  });
+    }),
+    diachronyPlugin,
+  ]);
 
   const replayRef = useRef<ReplayActions>();
 

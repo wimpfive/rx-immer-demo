@@ -3,10 +3,10 @@ import { Button, Card } from 'antd';
 import JSONEditor from 'jsoneditor';
 import 'jsoneditor/dist/jsoneditor.css';
 import { Objectish, updateDeep } from 'rx-immer';
-import type { RxImmerWithHooks } from 'rx-immer-react';
+import type { RxImmerReact } from 'rx-immer-react';
 
 function ObjEditor<T extends { obj: Objectish }>(props: {
-  store: RxImmerWithHooks<T>;
+  store: RxImmerReact<T>;
 }) {
   const { store } = props;
 

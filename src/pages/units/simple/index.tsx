@@ -1,14 +1,14 @@
-import { FunctionComponent, useState } from 'react';
-import { Card, Input, Space, Tag, Typography } from 'antd';
 import { Path } from 'rx-immer';
+import { FunctionComponent, useState } from 'react';
 import {
   injectDataWithInstance,
-  RxImmerWithHooks,
+  RxImmerReact,
   useRxImmer,
 } from 'rx-immer-react';
+import { Card, Input, Space, Tag, Typography } from 'antd';
 
 const Edit: FunctionComponent<{
-  store: RxImmerWithHooks<any>;
+  store: RxImmerReact;
   path: Path;
 }> = (props) => {
   const { store, path } = props;
@@ -26,7 +26,7 @@ const Edit: FunctionComponent<{
 };
 
 const View: FunctionComponent<{
-  store: RxImmerWithHooks<any>;
+  store: RxImmerReact;
   mapping: { state: any };
   space?: string | number;
 }> = (props) => {

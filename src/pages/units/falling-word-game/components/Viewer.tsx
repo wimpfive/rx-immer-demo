@@ -1,10 +1,10 @@
 import { CSSProperties, FunctionComponent } from 'react';
-import { injectInstanceWithContext, RxImmerWithHooks } from 'rx-immer-react';
+import { injectInstanceWithContext, RxImmerReact } from 'rx-immer-react';
 import { Typography } from 'antd';
 import { GameContext, IGame } from '../entity';
 
 const Viewer: FunctionComponent<{
-  game: RxImmerWithHooks<IGame>;
+  game: RxImmerReact<IGame>;
   style?: CSSProperties;
 }> = (props) => {
   const { game, style } = props;

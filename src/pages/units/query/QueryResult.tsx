@@ -1,9 +1,9 @@
 import { Empty, Space, Typography } from 'antd';
 import { FunctionComponent } from 'react';
-import { RxImmerWithHooks } from 'rx-immer-react';
+import { RxImmerReact } from 'rx-immer-react';
 
 const QueryResult: FunctionComponent<{
-  store: RxImmerWithHooks<any>;
+  store: RxImmerReact<any>;
   query: string;
 }> = (props) => {
   const { store, query } = props;
