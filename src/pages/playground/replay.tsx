@@ -1,4 +1,4 @@
-import { diachronyPlugin, ReplayModeExt } from 'rx-immer';
+import { replayMode, ReplayModeExt } from 'rx-immer';
 import {
   FunctionComponent,
   MutableRefObject,
@@ -19,9 +19,7 @@ interface ReplayProps {
 const Replay: FunctionComponent<ReplayProps> = (props) => {
   const { actionRef } = props;
 
-  const store = useRxImmer<Store, ReplayModeExt>(INITIAL_STORE, [
-    diachronyPlugin,
-  ]);
+  const store = useRxImmer<Store, ReplayModeExt>(INITIAL_STORE, [replayMode]);
 
   const [visible, setVisible] = useState(false);
   const [timeStamp, setTimeStamp] = useState(Date.now());
