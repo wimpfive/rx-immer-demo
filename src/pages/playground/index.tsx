@@ -4,6 +4,7 @@ import {
   DiachronyPluginExt,
   historyPlugin,
   HistoryPluginExt,
+  logPlugin,
   ReplayModeExt,
 } from 'rx-immer';
 import { useEffect, useRef } from 'react';
@@ -66,6 +67,7 @@ export default function Playground() {
     historyHooksPlugin,
     diachronyPlugin,
     DiachronyHooksPlugin,
+    logPlugin(),
   ]);
 
   const replayRef = useRef<ReplayActions>();
