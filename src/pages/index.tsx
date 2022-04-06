@@ -6,6 +6,8 @@ import ClassicComponent from './units/classic-component';
 import Playground from './playground';
 import FallingWordGame from './units/falling-word-game';
 import Query from './units/query';
+import Hox from './units/hox';
+import RxImmerDemo from './units/rx-immer-demo';
 
 const Index: FunctionComponent = () => {
   const [tabActiveKey, setTabActiveKey] = useState('simple');
@@ -24,6 +26,8 @@ const Index: FunctionComponent = () => {
           { key: 'falling-word-game', tab: '抛字游戏' },
           { key: 'query', tab: '测试查询' },
           { key: 'playground', tab: '综合演示' },
+          { key: 'hox', tab: 'hox实例' },
+          { key: 'rx-immer-demo', tab: 'rx-immer实例' },
         ]}
         tabActiveKey={tabActiveKey}
         onTabChange={setTabActiveKey}
@@ -42,6 +46,10 @@ const Index: FunctionComponent = () => {
               return <FallingWordGame />;
             case 'query':
               return <Query />;
+            case 'hox':
+              return <Hox />;
+            case 'rx-immer-demo':
+              return <RxImmerDemo />;
             default:
               return null;
           }

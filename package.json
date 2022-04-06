@@ -24,6 +24,7 @@
     "@ant-design/pro-form": "^1.59.3",
     "@ant-design/pro-layout": "^6.34.6",
     "antd": "^4.19.3",
+    "hox": "^1.1.6",
     "immer": "^9.0.12",
     "jsoneditor": "^9.7.4",
     "lodash": "^4.17.21",

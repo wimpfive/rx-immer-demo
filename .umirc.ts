@@ -6,4 +6,6 @@ export default defineConfig({
   },
   routes: [{ path: '/', component: '@/pages/index' }],
   fastRefresh: {},
+  title: 'rx-immer & hox',
+  favicon: './2.JPG',
 });
